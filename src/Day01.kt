@@ -1,11 +1,12 @@
 fun main() {
     val testInput = readInput("Day01_test")
-    println(testInput)
 
     val carriedCaloriesPerElve: List<List<String>> = testInput.toCarriedCaloriesPerElve()
     val caloriesIntakePerElve = carriedCaloriesPerElve.toCaloriesIntakePerElve()
     val maxCalorieIntake = caloriesIntakePerElve.max()
-    println(maxCalorieIntake)
+    println("Max calorie intake of an Elve: $maxCalorieIntake")
+    val top3Sum = caloriesIntakePerElve.sortedDescending().take(3).sum()
+    println("Sum of top 3 total calories : $top3Sum")
 }
 
 fun List<String>.toCarriedCaloriesPerElve(): List<List<String>> = fold(emptyList()) { acc, s ->
