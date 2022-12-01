@@ -1,17 +1,25 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
-
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
-
-    // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    println(testInput)
 
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    val carriedCaloriesPerElve: List<List<String>> = testInput.toCarriedCaloriesPerElve()
+    val caloriesIntakePerElve = carriedCaloriesPerElve.toCaloriesIntakePerElve()
+    val maxCalorieIntake = caloriesIntakePerElve.max()
+    println(maxCalorieIntake)
+}
+
+fun List<String>.toCarriedCaloriesPerElve(): List<List<String>> = fold(emptyList()) { acc, s ->
+    if(acc.isEmpty()) {
+        listOf(listOf(s))
+    }else if(s.isBlank()) {
+        acc + listOf(listOf())
+    } else {
+        acc.take(acc.size - 1) + listOf(acc.last() + s)
+    }
+}
+
+fun List<List<String>>.toCaloriesIntakePerElve() = map { calories ->
+    calories.fold(0) { acc, s ->
+        s.toInt() + acc
+    }
 }
