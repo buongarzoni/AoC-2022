@@ -1,4 +1,4 @@
-fun main() {
+fun solveDay01() {
     val testInput = readInput("Day01_test")
 
     val carriedCaloriesPerElve: List<List<String>> = testInput.toCarriedCaloriesPerElve()
@@ -9,7 +9,7 @@ fun main() {
     println("Sum of top 3 total calories : $top3Sum")
 }
 
-fun List<String>.toCarriedCaloriesPerElve(): List<List<String>> = fold(emptyList()) { acc, s ->
+private fun List<String>.toCarriedCaloriesPerElve(): List<List<String>> = fold(emptyList()) { acc, s ->
     if(acc.isEmpty()) {
         listOf(listOf(s))
     }else if(s.isBlank()) {
@@ -19,7 +19,7 @@ fun List<String>.toCarriedCaloriesPerElve(): List<List<String>> = fold(emptyList
     }
 }
 
-fun List<List<String>>.toCaloriesIntakePerElve() = map { calories ->
+private fun List<List<String>>.toCaloriesIntakePerElve() = map { calories ->
     calories.fold(0) { acc, s ->
         s.toInt() + acc
     }
