@@ -1,32 +1,32 @@
 fun solveDay04() {
-    val result = readInput("Day04").map {line ->
+    val result = readInput("Day04").map { line ->
         line.split(',')
-    }.map {
+    }.sumOf {
         val (first, second) = it
         if (
             first.range().first in second.range() && first.range().last in second.range() ||
             second.range().first in first.range() && second.range().last in first.range()
         ) {
-            1
+            1L
         } else {
-            0
+            0L
         }
-    }.sum()
+    }
     println(result)
 
-    val result2 = readInput("Day04").map {line ->
+    val result2 = readInput("Day04").map { line ->
         line.split(',')
-    }.map {
+    }.sumOf {
         val (first, second) = it
         if (
             first.range().first in second.range() || first.range().last in second.range() ||
             second.range().first in first.range() || second.range().last in first.range()
         ) {
-            1
+            1L
         } else {
-            0
+            0L
         }
-    }.sum()
+    }
     println(result2)
 }
 
