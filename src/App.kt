@@ -1,3 +1,3 @@
 fun main() {
-    solveDay03()
+    solveDay04()
 }
