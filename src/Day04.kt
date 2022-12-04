@@ -3,7 +3,7 @@ fun solveDay04() {
         .map { line -> line.split("-", ",").map { it.toInt() } }
     val part1 = values.count { (a, b, c, d) -> (a <= c && b >= d) || (a >= c && b <= d) }
     println(part1)
-    val part2 = values.count { (a, b, c, d) -> (c in a..b) || (a in c..d) }
+    val part2 = values.count { (a, b, c, d) -> a <= d && b >= c }
     println(part2)
 
     val myPart1 = readInput("Day04")
