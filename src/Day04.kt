@@ -1,36 +1,22 @@
 fun solveDay04() {
-    val result = readInput("Day04").map { line ->
-        line.split(',')
-    }.sumOf {
-        val (first, second) = it
-        if (
-            first.range().first in second.range() && first.range().last in second.range() ||
-            second.range().first in first.range() && second.range().last in first.range()
-        ) {
-            1L
-        } else {
-            0L
+    val part1 = readInput("Day04")
+        .count {
+            val (firstRange, secondRange) = it.split(',')
+            firstRange isFullyContainedIn secondRange || secondRange isFullyContainedIn firstRange
         }
-    }
-    println(result)
-
-    val result2 = readInput("Day04").map { line ->
-        line.split(',')
-    }.sumOf {
-        val (first, second) = it
-        if (
-            first.range().first in second.range() || first.range().last in second.range() ||
-            second.range().first in first.range() || second.range().last in first.range()
-        ) {
-            1L
-        } else {
-            0L
+    println(part1)
+    val part2 = readInput("Day04")
+        .count {
+            val (firstRange, secondRange) = it.split(',')
+            firstRange overlapsWith secondRange || secondRange overlapsWith firstRange
         }
-    }
-    println(result2)
+    println(part2)
 }
 
-private fun String.range(): IntRange {
-    val (first, last) = split('-')
-    return first.toInt() .. last.toInt()
-}
+private infix fun String.isFullyContainedIn(other: String) = lowLimit in other.range() && upperLimit in other.range()
+private infix fun String.overlapsWith(other: String) = lowLimit in other.range() || upperLimit in other.range()
+
+private val String.lowLimit get(): Int = substringBefore('-').toInt()
+private val String.upperLimit get(): Int = substringAfter('-').toInt()
+
+private fun String.range() = lowLimit..upperLimit
