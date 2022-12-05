@@ -1,5 +1,48 @@
 fun solveDay05() {
-    val part1 = readInput("Day05")
+    val input = readInput("Day05")
+    println(makeHardcodedMap())
+    solvePart1(input)
+    solvePart2(input)
+}
+
+private fun solvePart1(input: List<String>) {
+    val hardcodedMap = makeHardcodedMap()
+    input.map { line ->
+        val splitted = line.split(" ")
+        val quantity = splitted[1].toInt()
+        val from = splitted[3].toInt()
+        val target = splitted[5].toInt()
+
+        repeat(quantity) {
+            hardcodedMap[target]!!.add(hardcodedMap[from]!!.removeLast())
+        }
+    }
+    println("Part 1")
+    println(hardcodedMap)
+}
+
+private fun solvePart2(input: List<String>) {
+    val hardcodedMap = makeHardcodedMap()
+    input.map { line ->
+        val splitted = line.split(" ")
+        val quantity = splitted[1].toInt()
+        val from = splitted[3].toInt()
+        val target = splitted[5].toInt()
+
+        val removedItems: ArrayDeque<String> = ArrayDeque()
+        repeat(quantity) {
+            removedItems.add(hardcodedMap[from]!!.removeLast())
+        }
+        repeat(quantity) {
+            hardcodedMap[target]!!.add(removedItems.removeLast())
+        }
+    }
+    println("Part 2")
+    println(hardcodedMap)
+}
+
+
+private fun makeHardcodedMap(): Map<Int, ArrayDeque<String>> {
     val first: ArrayDeque<String> = ArrayDeque()
     first.apply {
         add("W")
@@ -88,7 +131,7 @@ fun solveDay05() {
         add("Z")
         add("W")
     }
-    val hardcodedMap = mapOf<Int, ArrayDeque<String>>(
+    return mapOf(
         1 to first,
         2 to second,
         3 to third,
@@ -99,20 +142,4 @@ fun solveDay05() {
         8 to eight,
         9 to nine,
     )
-    println(hardcodedMap)
-
-
-    part1.map { line ->
-        val splitted = line.split(" ")
-        val quantity = splitted[1].toInt()
-        val from = splitted[3].toInt()
-        val hacia = splitted[5].toInt()
-        repeat(quantity) {
-            val removeQueue = hardcodedMap[from]!!
-            val toQueue = hardcodedMap[hacia]!!
-            toQueue.add(removeQueue.removeLast())
-        }
-    }
-
-    println(hardcodedMap)
 }
