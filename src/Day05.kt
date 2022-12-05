@@ -8,10 +8,10 @@ fun solveDay05() {
 private fun solvePart1(input: List<String>) {
     val hardcodedMap = makeHardcodedMap()
     input.map { line ->
-        val splitted = line.split(" ")
-        val quantity = splitted[1].toInt()
-        val from = splitted[3].toInt()
-        val target = splitted[5].toInt()
+        val strings = line.split(" ")
+        val quantity = strings[1].toInt()
+        val from = strings[3].toInt()
+        val target = strings[5].toInt()
 
         repeat(quantity) {
             hardcodedMap[target]!!.add(hardcodedMap[from]!!.removeLast())
@@ -24,10 +24,10 @@ private fun solvePart1(input: List<String>) {
 private fun solvePart2(input: List<String>) {
     val hardcodedMap = makeHardcodedMap()
     input.map { line ->
-        val splitted = line.split(" ")
-        val quantity = splitted[1].toInt()
-        val from = splitted[3].toInt()
-        val target = splitted[5].toInt()
+        val strings = line.split(" ")
+        val quantity = strings[1].toInt()
+        val from = strings[3].toInt()
+        val target = strings[5].toInt()
 
         val removedItems: ArrayDeque<String> = ArrayDeque()
         repeat(quantity) {
@@ -41,96 +41,34 @@ private fun solvePart2(input: List<String>) {
     println(hardcodedMap)
 }
 
-
 private fun makeHardcodedMap(): Map<Int, ArrayDeque<String>> {
     val first: ArrayDeque<String> = ArrayDeque()
-    first.apply {
-        add("W")
-        add("M")
-        add("L")
-        add("F")
-    }
+    first.fillWith("WMLF")
+
     val second: ArrayDeque<String> = ArrayDeque()
-    second.apply {
-        add("B")
-        add("Z")
-        add("V")
-        add("M")
-        add("F")
-    }
+    second.fillWith("BZVMF")
+
     val third: ArrayDeque<String> = ArrayDeque()
-    third.apply {
-        add("H")
-        add("V")
-        add("R")
-        add("S")
-        add("L")
-        add("Q")
-    }
+    third.fillWith("HVRSLQ")
 
     val fourth: ArrayDeque<String> = ArrayDeque()
-    fourth.apply {
-        add("F")
-        add("S")
-        add("V")
-        add("Q")
-        add("P")
-        add("M")
-        add("T")
-        add("J")
-    }
+    fourth.fillWith("FSVQPMTJ")
+
     val five: ArrayDeque<String> = ArrayDeque()
-    five.apply {
-        add("L")
-        add("S")
-        add("W")
-    }
+    five.fillWith("LSW")
 
     val six: ArrayDeque<String> = ArrayDeque()
-    six.apply {
-        add("F")
-        add("V")
-        add("P")
-        add("M")
-        add("R")
-        add("J")
-        add("W")
-    }
+    six.fillWith("FVPMRJW")
 
     val seven: ArrayDeque<String> = ArrayDeque()
-    seven.apply {
-        add("J")
-        add("Q")
-        add("C")
-        add("P")
-        add("N")
-        add("R")
-        add("F")
-    }
+    seven.fillWith("JQCPNRF")
 
     val eight: ArrayDeque<String> = ArrayDeque()
-    eight.apply {
-        add("V")
-        add("H")
-        add("P")
-        add("S")
-        add("Z")
-        add("W")
-        add("R")
-        add("B")
-    }
+    eight.fillWith("VHPSZWRB")
 
     val nine: ArrayDeque<String> = ArrayDeque()
-    nine.apply {
-        add("B")
-        add("M")
-        add("J")
-        add("C")
-        add("G")
-        add("H")
-        add("Z")
-        add("W")
-    }
+    nine.fillWith("BMJCGHZW")
+
     return mapOf(
         1 to first,
         2 to second,
@@ -142,4 +80,10 @@ private fun makeHardcodedMap(): Map<Int, ArrayDeque<String>> {
         8 to eight,
         9 to nine,
     )
+}
+
+private fun ArrayDeque<String>.fillWith(string: String) {
+    for (char in string) {
+        this.add(char.toString())
+    }
 }
