@@ -1,7 +1,6 @@
 fun solveDay08() {
     val input = readInput("Day08")
     solvePart1(input)
-    solvePart2(input)
 }
 private var trees: List<List<Int>> = emptyList()
 private val visibleTrees: MutableList<MutableList<Byte>> = mutableListOf()
@@ -18,6 +17,7 @@ private fun initVisibleTrees(input: List<String>) {
 }
 
 private fun fillVisibleRows(input: List<String>) {
+    var maxValue = 0L
     val rows = visibleTrees.size
     val updatedVisibleTrees: MutableList<MutableList<Byte>> = mutableListOf()
     visibleTrees.forEachIndexed { row, bytes ->
@@ -31,6 +31,10 @@ private fun fillVisibleRows(input: List<String>) {
                 if (column == 0 || column == columns - 1) {
                     updatedRow.add(1)
                 } else {
+                    val result = visibleTrees(row, column)
+                    if (result> maxValue) {
+                        maxValue = result
+                    }
                     if (
                         isVisibleFromTop(row, column) ||
                         isVisibleFromLeft(row, column) ||
@@ -48,6 +52,7 @@ private fun fillVisibleRows(input: List<String>) {
     }
     val res = updatedVisibleTrees.sumOf { it.count { byte -> byte == 1.toByte() } }
     println("solution 1 : $res")
+    println("solution 2 : $maxValue")
 }
 
 private fun isVisibleFromTop(rowP: Int, columnP: Int) : Boolean {
@@ -82,7 +87,27 @@ private fun isVisibleFromBottom(rowP: Int, columnP: Int) : Boolean {
     return true
 }
 
-private fun solvePart2(input: List<String>) {
-    input.forEach { line ->
+private fun visibleTrees(rowP: Int, columnP: Int) : Long {
+    val height = trees[rowP][columnP]
+    var top = 0L
+    var right = 0L
+    var left = 0L
+    var bottom = 0L
+    for (row in rowP + 1 until trees.size) {
+        bottom++
+        if (trees[row][columnP] >= height) break
     }
+    for (column in columnP + 1 until trees[rowP].size) {
+        right++
+        if (trees[rowP][column] >= height) break
+    }
+    for (column in (0 until columnP).reversed()) {
+        left++
+        if (trees[rowP][column] >= height) break
+    }
+    for (row in (0 until rowP).reversed()) {
+        top++
+        if (trees[row][columnP] >= height) break
+    }
+    return top * right * left * bottom
 }
