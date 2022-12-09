@@ -1,9 +1,9 @@
 fun solveDay08() {
-    val input = readInput("Day08")
+    val input = readInput("Day08_test")
     solvePart1(input)
 }
 private var trees: List<List<Int>> = emptyList()
-private val visibleTrees: MutableList<MutableList<Byte>> = mutableListOf()
+private val visibleTrees: MutableList<MutableList<Boolean>> = mutableListOf()
 private fun solvePart1(input: List<String>) {
     trees  = input.map { line -> line.map { it.digitToInt() } }
     initVisibleTrees(input)
@@ -11,7 +11,7 @@ private fun solvePart1(input: List<String>) {
 }
 private fun initVisibleTrees(input: List<String>) {
     input.forEach {
-         val row : MutableList<Byte> = MutableList(it.length) { 0 }
+         val row  = MutableList(it.length) { false }
         visibleTrees.add(row)
     }
 }
@@ -19,17 +19,17 @@ private fun initVisibleTrees(input: List<String>) {
 private fun fillVisibleRows(input: List<String>) {
     var maxValue = 0L
     val rows = visibleTrees.size
-    val updatedVisibleTrees: MutableList<MutableList<Byte>> = mutableListOf()
+    val updatedVisibleTrees: MutableList<MutableList<Boolean>> = mutableListOf()
     visibleTrees.forEachIndexed { row, bytes ->
         if (row == 0 || row == rows - 1) {
-            val updatedRow: MutableList<Byte> = bytes.map { 1.toByte() }.toMutableList()
+            val updatedRow = bytes.map { true }.toMutableList()
             updatedVisibleTrees.add(updatedRow)
         } else {
-            val updatedRow: MutableList<Byte> = mutableListOf()
+            val updatedRow: MutableList<Boolean> = mutableListOf()
             val columns = bytes.size
             bytes.forEachIndexed { column, byte ->
                 if (column == 0 || column == columns - 1) {
-                    updatedRow.add(1)
+                    updatedRow.add(true)
                 } else {
                     val result = visibleTrees(row, column)
                     if (result> maxValue) {
@@ -41,16 +41,17 @@ private fun fillVisibleRows(input: List<String>) {
                         isVisibleFromRight(row, column) ||
                         isVisibleFromBottom(row, column)
                     ) {
-                        updatedRow.add(1)
+                        updatedRow.add(true)
                     } else {
-                        updatedRow.add(0)
+                        updatedRow.add(false)
                     }
                 }
             }
             updatedVisibleTrees.add(updatedRow)
         }
     }
-    val res = updatedVisibleTrees.sumOf { it.count { byte -> byte == 1.toByte() } }
+    val res = updatedVisibleTrees.sumOf { it.count() }
+    println(updatedVisibleTrees)
     println("solution 1 : $res")
     println("solution 2 : $maxValue")
 }
