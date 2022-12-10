@@ -14,12 +14,7 @@ private fun solve(input: List<String>, points: List<Point>): Int {
     input.forEach { line ->
         val (direction, moves) = line.split(" ")
         for (move in 0 until moves.toInt()) {
-            when (direction) {
-                "R" -> points.first().moveRight()
-                "L" -> points.first().moveLeft()
-                "U" -> points.first().moveUp()
-                "D" -> points.first().moveDown()
-            }
+            points.moveHead(direction)
             points.forEachIndexed { index, point ->
                 if (index != 0) {
                     val leading = points[index - 1]
@@ -32,6 +27,14 @@ private fun solve(input: List<String>, points: List<Point>): Int {
         }
     }
     return visitedPositions.size
+}
+private fun List<Point>.moveHead(direction: String) {
+    when (direction) {
+        "R" -> first().moveRight()
+        "L" -> first().moveLeft()
+        "U" -> first().moveUp()
+        "D" -> first().moveDown()
+    }
 }
 
 private fun Point.follow(other: Point) {
