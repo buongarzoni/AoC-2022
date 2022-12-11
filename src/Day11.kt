@@ -29,16 +29,16 @@ private fun solve(
             while (monkey.items.isNotEmpty()) {
                 monkey.inspectedItems++
                 val item = monkey.items.removeFirst()
-                val operateWith = if (monkey.operationNumber == "old") item else monkey.operationNumber.toLong()
+                val operator = if (monkey.operator == "old") item else monkey.operator.toLong()
                 val result = when(monkey.operation) {
-                    "*" -> worryLevelOperation(item * operateWith)
-                    "+" -> worryLevelOperation(item + operateWith)
-                    else -> error("unexpected operation $operateWith")
+                    "*" -> worryLevelOperation(item * operator)
+                    "+" -> worryLevelOperation(item + operator)
+                    else -> error("unexpected operation $operator")
                 }
                 if (result % monkey.testDivisibleBy == 0L) {
-                    monkeys[monkey.ifTrueThrowTo].items.add(result)
+                    monkeys[monkey.ifTrueThrowToMonkey].items.add(result)
                 } else {
-                    monkeys[monkey.ifFalseThrowTo].items.add(result)
+                    monkeys[monkey.ifFalseThrowToMonkey].items.add(result)
                 }
             }
         }
@@ -59,18 +59,18 @@ private fun parseMonkeys(input: String) = input.split("\n\n").map { monkeyInput 
             val startingItems = line.substringAfter("Starting items: ").split(", ")
             startingItems.forEach { monkey.items.add(it.toLong()) }
         } else if (line.contains("Operation")) {
-            val (operation, number) = line.substringAfter("Operation: new = old ").split(" ")
+            val (operation, operator) = line.substringAfter("Operation: new = old ").split(" ")
             monkey.operation = operation
-            monkey.operationNumber = number
+            monkey.operator = operator
         } else if (line.contains("Test")) {
             val divisibleBy = line.substringAfter("Test: divisible by ").toLong()
             monkey.testDivisibleBy = divisibleBy
         } else if (line.contains("If true")) {
             val toMonkey = line.substringAfter("If true: throw to monkey ").toInt()
-            monkey.ifTrueThrowTo = toMonkey
+            monkey.ifTrueThrowToMonkey = toMonkey
         } else if (line.contains("If false")) {
             val toMonkey = line.substringAfter("If false: throw to monkey ").toInt()
-            monkey.ifFalseThrowTo = toMonkey
+            monkey.ifFalseThrowToMonkey = toMonkey
         }
     }
     monkey
@@ -81,8 +81,8 @@ data class Monkey(
     var inspectedItems: Long = 0,
     val items: MutableList<Long> = mutableListOf(),
     var operation: String = "",
-    var operationNumber: String = "",
+    var operator: String = "",
     var testDivisibleBy: Long = 0,
-    var ifTrueThrowTo: Int = 0,
-    var ifFalseThrowTo: Int = 0,
+    var ifTrueThrowToMonkey: Int = 0,
+    var ifFalseThrowToMonkey: Int = 0,
 )
